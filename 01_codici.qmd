@@ -1,0 +1,128 @@
+---
+title: "Spesa statale regionalizzata 2021"
+# general Output Options
+execute:     
+  eval: true
+  echo: false     #  include source code in output?
+  warning: false  #  include warning code in output?
+  error: false    #  include error code in output?
+  output: true   # include output code in output (CHG in BLOCKS)?
+  # include: false   # R still runs but code and results DON"T appear in output  
+  # cache: false
+toc: true
+format:
+  html:
+    code-fold: false # redundant IF echo false 
+    toc-depth: 2
+    toc_float: true
+    toc-location: left
+    toc-title: ""
+    # template: theme/template.tex  
+bibliography: bib/CPT.bib
+#csl: bib/apa-cv.csl # Very important for complete citations!!!!! 
+## --------- NO END REFERENCES .... other options are redundant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+suppress-bibliography: false
+# biblio-style: apa # authoryear-icomp # abbrv # alpha #apalike # plain # unsrt #siam
+#reference-section-title: References
+#link-citations: false
+# filters:
+#   - section-bibliographies
+lang: it 
+---
+
+```{r}
+#| echo: false
+#| output: false
+
+Sys.setlocale(category = "LC_ALL", locale = "it_IT.UTF-8")
+
+cat("Locale attivo:", Sys.getlocale(), "\n")
+cat("Separatore decimale:", getOption("OutDec"), "\n")
+#check 
+format(1234567.89, big.mark = ".", decimal.mark = ",")
+```
+
+# Fonte dati di partenza
+
+I file di input sono nella cartella `./data/` e sono:
+
+-   `data/rgs_2021_prov_report/` - Report + Tabelle *"RGS - Spesa statale regionalizzata 2021 (provvisoria)"* [@mef_-_rgs_spesa_2023]
+
+-   `rgs_2021_prov/...` - I 4 dataset che erano salvati nella cartella condivisa [`Produzione/Revisione Spese Stato/Spese dello Stato File Input/Scarichi originali RGS/ 2021/2021/Regio 2021_provvisorio provv/`](https://governoit.sharepoint.com/:f:/r/sites/DPCOES-Documentale/Documenti%20condivisi/Ufficio%20IV/ServizioXV/Produzione/Revisione%20spese%20stato/Spese%20dello%20Stato_file%20INPUT/Scarichi%20originali%20RGS/2021/2021%20provv?csf=1&web=1&e=dVmcFZ)
+
+    -   `Capitoli_Anno_2021.xlsx` (🟧 Rendiconto generale, per capitolo / amminist/ cat spesa 3 liv / categ funz 3 liv/)
+_Codice Categoria Spese (CAT)_ comprende [01-31 & 61, quest'ultima serve perchè RGS non la inserisce nei dati della pubblicazione]
+    -   `Dati_Regio_2021_stima.xlsx` (Spesa regionalizzata)
+qui _Codice Categoria Spese (CAT)_ comprende solo [01-31]  
+molte piu osservazioni perchè spalmata su regioni + province autonome
+    -   `Dati_No_Regio_2021_stima.xlsx`
+    -   `Dati_Fondi_Enti_2021_stima.xlsx`
+qui si aggiunge Ente/fondo e un codice + descriz ente
+NON c'è regione, quindi va incrociato con qualche tabella da `data/rgs_2021_prov_report/` (🟧 quale?)
+
+
+## RGS - Spesa statale regionalizzata 2021 (provvisoria)
+
+Spesa totale per il 2021 pari a **810.970** mln di euro [@mef_-_rgs_spesa_2023, vedi tot in Tab. A p. 13], di cui:
+
+-   *regionalizzata* = ripartibile sulle regioni = **324.516** mln di euro (\~ 40 o 50%)
+-   *erogata a Fondi o Enti* = pagamenti dello Stato verso Fondi o Enti = **330.326** mln di euro [@mef_-_rgs_spesa_2023, vedi Tab. C p. 18]
+-   *non regionalizzabile* = **156.129** mln di euro
+
+```{r}
+#| eval: false
+#| 
+# da ripulire, x spezzare dati e rimuovere righe vuote e convertire format italiano 
+
+library(readxl)
+Tab_C <- read_excel("data/rgs_2021/Tab_C.xlsx",
+                    # input has italian numeric format 
+                    col_types = c("text", "text", "numeric", "numeric", "numeric", "numeric"),
+                    ) |> 
+  mutate (across(ends_with("_m"), 
+                 ~parse_number(.x, 
+                               locale = locale(decimal_mark = ",", grouping_mark = ".")))) 
+View(Tab_C)
+
+
+  ## ----- converts  CHARACTERS € notation 2 $ notation!!!! # from "299.143,00"  to "299143.00"
+  ## ----- explicit locale specifying European grouping and decimal marks
+     %>% 
+
+```
+
+## Classificazione RGS
+
+-   50 settori, 34 missioni e 16 programmi
+-   33 categorie e sotto categorie di spesa (e.g. personale, acquisti, ecc) al 3o liv. di dettaglio
+-   categorie funzionali (COFOG) al 3o liv. di dettaglio
+-   regioni e province autonome
+
+## Classificazione CPT
+
+-   29 settori
+-   50 categorie di spesa (33 usate!?)
+
+# STEP
+
+## Raccordo codici
+
+## Elaborazione Spesa regionalizzata
+
+<!-- input RGS  -->
+
+Mi occorrono
+
+-   
+
+## Elaborazione Enti
+
+<!-- input RGS  -->
+
+## Elaborazione Fondi
+
+<!-- input RGS  -->
+
+## Elaborazione Spesa non regionalizzabile
+
+<!-- input RGS  -->

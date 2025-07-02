@@ -1,0 +1,21 @@
+project:
+  type: website
+
+website:
+  title: "cpt"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - 01_codici.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+
+

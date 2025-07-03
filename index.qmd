@@ -1,7 +1,6 @@
 ---
-title: "cpt"
+title: "Conti pubblici territoriali"
+subtitle: "Elaborazione spesa su 2021"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Analisi spesa statale regionalizzata (stima provvisoria su anno 2021) 

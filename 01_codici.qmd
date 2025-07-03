@@ -1,6 +1,9 @@
 ---
 title: "Spesa statale regionalizzata 2021"
-# general Output Options
+date: last-modified
+date-format: "DD-MMMM-YYYY [ultimo aggiornamento]"
+lang: it
+# General Output Options
 execute:     
   eval: true
   echo: false     #  include source code in output?
@@ -10,14 +13,31 @@ execute:
   # include: false   # R still runs but code and results DON"T appear in output  
   # cache: false
 toc: true
+fig-cap-location: top
+tbl-cap-location: top
 format:
   html:
-    code-fold: false # redundant IF echo false 
-    toc-depth: 2
+    theme: flatly #spacelab
+    code-fold: true # redundant bc echo false 
+    toc-depth: 3
     toc_float: true
     toc-location: left
-    toc-title: ""
-    # template: theme/template.tex  
+    toc-title: Indice
+    embed-resources: true # external dependencies embedded (Not in ..._files/)
+  docx:
+    toc-depth: 2
+    toc-title: Indice
+    highlight-style: github
+    #lang: it
+    embed-resources: true # external dependencies embedded (Not in ..._files/)
+    page-width: 6.5
+  pdf:
+    toc-depth: 2
+    toc-title: Indice
+    highlight-style: github
+    #lang: it
+    embed-resources: true # external dependencies embedded (Not in ..._files/)
+format-links: false
 bibliography: bib/CPT.bib
 #csl: bib/apa-cv.csl # Very important for complete citations!!!!! 
 ## --------- NO END REFERENCES .... other options are redundant!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -27,30 +47,67 @@ suppress-bibliography: false
 #link-citations: false
 # filters:
 #   - section-bibliographies
-lang: it 
 ---
 
 ```{r}
-#| echo: false
+#| label: locale_proj
 #| output: false
 
 Sys.setlocale(category = "LC_ALL", locale = "it_IT.UTF-8")
+options(scipen=999)
 
+#checks
 cat("Locale attivo:", Sys.getlocale(), "\n")
 cat("Separatore decimale:", getOption("OutDec"), "\n")
-#check 
 format(1234567.89, big.mark = ".", decimal.mark = ",")
 ```
 
-# Fonte dati di partenza
 
-I file di input sono nella cartella `./data/` e sono:
+```{r}
+#| label: setup
 
--   `data/rgs_2021_prov_report/` - Report + Tabelle *"RGS - Spesa statale regionalizzata 2021 (provvisoria)"* [@mef_-_rgs_spesa_2023]
+# ------- pckgs 
+library(here) # A Simpler Way to Find Your Files
+library(fs) # Cross-Platform File System Operations Based on 'libuv'
+library(dplyr) # Easily Install and Load the 'Tidyverse'
+library(forcats) # Tools for Working with Categorical Variables (Factors)
+library(janitor) # Simple Tools for Examining and Cleaning Dirty Data
+library(skimr) # Compact and Flexible Summaries of Data
+library(anytime) # Anything to 'POSIXct' or 'Date' Converter
 
--   `rgs_2021_prov/...` - I 4 dataset che erano salvati nella cartella condivisa [`Produzione/Revisione Spese Stato/Spese dello Stato File Input/Scarichi originali RGS/ 2021/2021/Regio 2021_provvisorio provv/`](https://governoit.sharepoint.com/:f:/r/sites/DPCOES-Documentale/Documenti%20condivisi/Ufficio%20IV/ServizioXV/Produzione/Revisione%20spese%20stato/Spese%20dello%20Stato_file%20INPUT/Scarichi%20originali%20RGS/2021/2021%20provv?csf=1&web=1&e=dVmcFZ)
+#library(kableExtra) # NOT ideal for Word / allows search 
+library(flextable) # ideal for Word
+#library(gt) #  
+library(glue) #  
+library(paint) #  
 
-    -   `Capitoli_Anno_2021.xlsx` (🟧 Rendiconto generale, per capitolo / amminist/ cat spesa 3 liv / categ funz 3 liv/)
+library(readxl) 
+# library(writexl)
+library(readr) # Read Rectangular Text Data
+library(openxlsx) # NON da problemi !!!!!
+
+# ------- R utilities and functions  
+source(file = here("R","Colori.R"))
+source(file = here("R","funs_ft_formatting.R")) # %>% f_ft_properties()
+```
+
+
+In questo `R Project` (**"CPT"**) è contenuto il processo di elaborazione della spesa statale regionalizzata per l'anno 2021 (**provvisoria**).
+
+::: {.callout-caution title="Nota"}
+🟠  = dettaglio da verificare / correggere.  
+⚪️ = dettaglio da completare
+:::
+
+# DATI
+
+I vari file di input per l'anno osservato sono raccolti nella cartella `./data/` e sono:
+
+-   `data/rgs_2021_prov_report/` - Report + Tabelle da *"RGS - Spesa statale regionalizzata 2021 (provvisoria)"* [@mef_-_rgs_spesa_2023]
+
+-   `rgs_2021_prov_dataset/...` - I 4 dataset che copiati dalla cartella condivisa [`Produzione/Revisione Spese Stato/Spese dello Stato File Input/Scarichi originali RGS/ 2021/2021/Regio 2021_provvisorio provv/`](https://governoit.sharepoint.com/:f:/r/sites/DPCOES-Documentale/Documenti%20condivisi/Ufficio%20IV/ServizioXV/Produzione/Revisione%20spese%20stato/Spese%20dello%20Stato_file%20INPUT/Scarichi%20originali%20RGS/2021/2021%20provv?csf=1&web=1&e=dVmcFZ)
+
+    -   `Capitoli_Anno_2021.xlsx` (🟠 Rendiconto generale, per capitolo / amminist/ cat spesa 3 liv / categ funz 3 liv/)
 _Codice Categoria Spese (CAT)_ comprende [01-31 & 61, quest'ultima serve perchè RGS non la inserisce nei dati della pubblicazione]
     -   `Dati_Regio_2021_stima.xlsx` (Spesa regionalizzata)
 qui _Codice Categoria Spese (CAT)_ comprende solo [01-31]  
@@ -58,7 +115,7 @@ molte piu osservazioni perchè spalmata su regioni + province autonome
     -   `Dati_No_Regio_2021_stima.xlsx`
     -   `Dati_Fondi_Enti_2021_stima.xlsx`
 qui si aggiunge Ente/fondo e un codice + descriz ente
-NON c'è regione, quindi va incrociato con qualche tabella da `data/rgs_2021_prov_report/` (🟧 quale?)
+NON c'è regione, quindi va incrociato con qualche tabella da `data/rgs_2021_prov_report/` (🟠 quale?)
 
 
 ## RGS - Spesa statale regionalizzata 2021 (provvisoria)
@@ -74,7 +131,7 @@ Spesa totale per il 2021 pari a **810.970** mln di euro [@mef_-_rgs_spesa_2023, 
 #| 
 # da ripulire, x spezzare dati e rimuovere righe vuote e convertire format italiano 
 
-library(readxl)
+
 Tab_C <- read_excel("data/rgs_2021/Tab_C.xlsx",
                     # input has italian numeric format 
                     col_types = c("text", "text", "numeric", "numeric", "numeric", "numeric"),
@@ -84,30 +141,235 @@ Tab_C <- read_excel("data/rgs_2021/Tab_C.xlsx",
                                locale = locale(decimal_mark = ",", grouping_mark = ".")))) 
 View(Tab_C)
 
+```
 
-  ## ----- converts  CHARACTERS € notation 2 $ notation!!!! # from "299.143,00"  to "299143.00"
-  ## ----- explicit locale specifying European grouping and decimal marks
-     %>% 
+
+
+# PROCESSO
+
++ 1 Acquisizione dati
++ 2 Raccordo codici Rendiconto - CPT
+  + Settori 
+  + Categorie di spesa 
++ 4 Elaboraz. Spesa regionalizzata
++ 5a Elaboraz. Enti
++ 5b Elaboraz. Fondi
++ 6 Elaboraz. Spesa non regionalizzabile
+
+---
+
+# 1) Acquisizione dati
+
+## Tabella `rendiconto`
+
+```{r}
+#| label: rendiconto
+
+rendiconto <- read_excel("data/rgs_2021_prov_dataset/Capitoli_Anno_2021.xlsx", sheet = 1)
+```
+
+### Codice variabile (con abbreviazione)
+
+Rinomino le colonne...
+```{r}
+# Nomi originali
+original_names <- names(rendiconto)
+
+# Nomi abbreviati manuali (puoi personalizzarli come preferisci)
+short_names <- c(
+  "anno",
+  "cod_cap",
+  "desc_cap",
+  "cod_cat",
+  "desc_cat",
+  "cod_ce2",
+  "desc_ce2",
+  "cod_ce3",
+  "desc_ce3",
+  "cod_fo1",
+  "desc_fo1",
+  "cod_fo2",
+  "desc_fo2",
+  "cod_fo3",
+  "desc_fo3",
+  "cod_mis",
+  "desc_mis",
+  "cod_prg",
+  "desc_prg",
+  "cod_cdr",
+  "desc_cdr",
+  "tot_pagato"
+)
+
+# Estrai seconda riga come vettore di esempio
+example_values <- as.character(rendiconto[2, ]) |> unname()
+
+# Creazione tabella
+rendiconto_var_ft <- tibble(
+  `Nome Originale` = original_names,
+  `Nome Abbreviato` = short_names,
+   Esempio = example_values) |> 
+  flextable() |> 
+  bg( j = 2, bg = gialloMEF_extralight) 
+
+# Visualizza con flextable
+rendiconto_var_ft
+```
+
+#### [Tbl. `rendiconto_t`]
+```{r}
+# safely rename 
+if (length(names(rendiconto)) == length(short_names)) {
+  names(rendiconto) <- short_names
+} else {
+  stop("Short names vector has different length than dataframe columns.")
+}
+
+# add collapsed codes
+rendiconto_t <- rendiconto |> 
+  # new col with collapsed codes
+  mutate(
+    # class economica
+    cod_cat_all =  paste(cod_cat, cod_ce2, cod_ce3, sep = "_"),
+    desc_cat_all =  paste(desc_cat, desc_ce2, desc_ce3, sep = " | "),
+    # class funzionale
+    cod_cofog_all = paste(cod_fo1, cod_fo2, cod_fo3, sep = "_"),
+    desc_cofog_all = paste(desc_fo1, desc_fo2, desc_fo3, sep = " | ")
+  )
 
 ```
 
-## Classificazione RGS
+... e aggiungo colonne con i codici e descrizioni concatenate per _categorie di spesa_ (`cod_cat_all`) e _classificazione funzionale (COFOG)_ (`cod_cofog_all`)
+
+(Verifica spot)
+```{r}
+#| output: true
+# check 
+
+cat_check <- rendiconto_t |> 
+  select(cod_cat, cod_ce2, cod_ce3,  cod_cat_all, 
+         desc_cat, desc_ce2, desc_ce3, desc_cat_all, 
+         tot_pagato) |> 
+ sample_n(3)
+ 
+cat_check |> flextable() |> 
+  bg(j = c(4,8), bg = gialloMEF_extralight) 
+
+cofog_check <- rendiconto_t |> 
+  select(cod_fo1, cod_fo2, cod_fo3, cod_cofog_all, 
+         desc_fo1, desc_fo2, desc_fo3, desc_cofog_all,
+         tot_pagato) |> 
+ sample_n(3)
+
+cofog_check |> flextable() |> 
+  bg(j = c(4,8), bg = gialloMEF_extralight) 
+```
+
+
+# 2) Raccordo codici Rendiconto - CPT
+
+## ⚪️ Regioni e Provincie Autonome
+
+... 
+
+## 🟠 Classificazione CPT
+
+Questa tabella viene dal file (condiviso da Alessandra) `data/Categorie_con_totali_e_settori.xlsx`  
+
+```{r}
+#| label: cod_cpt
+
+# Leggo la tabella con i codici CPT
+cpt <- read_excel("data/Categorie_con_totali_e_settori.xlsx", sheet = "Settori")
+```
+
+#### [Tbl. `cpt_t`]
+Rinomino le colonne...
+```{r}
+# Nomi originali
+original_names2 <- names(cpt)
+
+# Nomi abbreviati manuali 
+short_names2 <- c(
+  "cod_sett_cpt",
+  "desc_sett_cpt"
+)
+
+cpt_t <- cpt |> 
+  # rinomina le colonne
+  rename_with(~short_names2, everything())
+```
+
+
+```{r}
+#| label: cpt_ft
+
+# Creazione tabella
+cpt_ft <- cpt_t |> 
+  flextable() |> 
+  # tengo nomi originali
+  set_header_labels(
+    cod_sett_cpt = "Codice Settore CPT",
+    desc_sett_cpt = "Descrizione Settore CPT"
+  ) |>
+  bg( j = 1, bg = gialloMEF_extralight) 
+
+# Visualizza con flextable
+cpt_ft
+```
+
+Da questa tabella vedo che ho `r nrow(cpt_t)` settori CPT, 
+
+- ❓ ma perchè non c'è `0012`?
+- ❓ ma perchè  hanno 2 `0` davanti?
+
+```{r}
+#| label: sett_cpt
+#| output: false
+
+# confronto con rendiconto
+(sett_cpt <- cpt_t |> 
+  select(cod_sett_cpt, desc_sett_cpt) |> 
+  distinct() |> 
+  arrange(cod_sett_cpt) |>
+  flextable())
+```
+
+
+Confronto con la classificazione funzionale RGS `cod_fo1` e `desc_fo1` (settori al 1o livello)
+
+```{r}
+#| label: sett_rendiconto
+
+# confronto con rendiconto
+(sett_rendiconto <- rendiconto_t |> 
+  select(cod_fo1, desc_fo1) |> 
+  distinct() |> 
+  arrange(cod_fo1) |> 
+  flextable())
+```
+
+Da questa tabella vedo che ho `r n_distinct(rendiconto_t$cod_fo1)` settori in RGS, 
+
+- ❓ solo 10 settori (1o livello)?
+- ❓ E la class COFOG? 
+
+## Categorie di spesa (_classificazione economica_)
+<!-- "oggetto della spesa" -->
+
+🟠 Classificazione RGS
+-   33 categorie e sotto categorie di spesa (e.g. personale, acquisti, ecc) al 3o liv. di dettaglio
+
+## Settori (_classificazione funzionale_)
+<!-- "settore della spesa" -->
+
+🟠 Classificazione RGS
 
 -   50 settori, 34 missioni e 16 programmi
--   33 categorie e sotto categorie di spesa (e.g. personale, acquisti, ecc) al 3o liv. di dettaglio
 -   categorie funzionali (COFOG) al 3o liv. di dettaglio
--   regioni e province autonome
 
-## Classificazione CPT
 
--   29 settori
--   50 categorie di spesa (33 usate!?)
-
-# STEP
-
-## Raccordo codici
-
-## Elaborazione Spesa regionalizzata
+# 4) Elaboraz. Spesa regionalizzata
 
 <!-- input RGS  -->
 
@@ -115,14 +377,17 @@ Mi occorrono
 
 -   
 
-## Elaborazione Enti
+# 5a) Elaboraz. Enti
 
 <!-- input RGS  -->
 
-## Elaborazione Fondi
+# 5b) Elaboraz. Fondi
 
 <!-- input RGS  -->
 
-## Elaborazione Spesa non regionalizzabile
+# 6) Elaboraz. Spesa non regionalizzabile
 
 <!-- input RGS  -->
+
+# Riferimenti bibliografici
+

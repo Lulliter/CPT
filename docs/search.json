@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "01_codici.html",
+    "href": "01_codici.html",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "",
+    "text": "In questo R Project (“CPT”) è contenuto il processo di elaborazione della spesa statale regionalizzata per l’anno 2021 (provvisoria)."
+  },
+  {
+    "objectID": "01_codici.html#rgs---spesa-statale-regionalizzata-2021-provvisoria",
+    "href": "01_codici.html#rgs---spesa-statale-regionalizzata-2021-provvisoria",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "RGS - Spesa statale regionalizzata 2021 (provvisoria)",
+    "text": "RGS - Spesa statale regionalizzata 2021 (provvisoria)\nSpesa totale per il 2021 pari a 810.970 mln di euro (MEF - RGS 2023, vedi tot in Tab. A p. 13), di cui:\n\nregionalizzata = ripartibile sulle regioni = 324.516 mln di euro (~ 40 o 50%)\nerogata a Fondi o Enti = pagamenti dello Stato verso Fondi o Enti = 330.326 mln di euro (MEF - RGS 2023, vedi Tab. C p. 18)\nnon regionalizzabile = 156.129 mln di euro"
+  },
+  {
+    "objectID": "01_codici.html#tabella-rendiconto",
+    "href": "01_codici.html#tabella-rendiconto",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "Tabella rendiconto",
+    "text": "Tabella rendiconto\n\nCodice variabile (con abbreviazione)\nRinomino le colonne…\n\n\nNome OriginaleNome AbbreviatoEsempioEsercizio Finanziario (Anno Contabile)anno2021Stp_Capitolocod_cap02_1003Denominazione Corrente Integrale CAPdesc_capSPESE PER BUONI PASTOCodice Categoria Spese (CAT)cod_cat01Descrizione Categoria Spesedesc_catREDDITI DA LAVORO DIPENDENTECodice Class.ne Economica di 2° Livello (CE2)cod_ce202Descrizione Class.ne Economica CE2desc_ce2RETRIBUZIONI IN NATURACodice Class.ne Economica di 3° Livello (CE3)cod_ce301Descrizione Class.ne Economica CE3desc_ce3BUONI PASTOCodice Divisione (FO1)cod_fo101Descrizione Divisione (FO1)desc_fo1SERVIZI GENERALI DELLE PUBBLICHE AMMINISTRAZIONICodice Gruppo (FO2)cod_fo201Descrizione Gruppo (FO2)desc_fo2ORGANI ESECUTIVI E LEGISLATIVI, ATTIVITA' FINANZIARIE E FISCALI E AFFARI ESTERICodice Classe (FO3)cod_fo302Descrizione Classe (FO3)desc_fo3AFFARI FINANZIARI E FISCALICodice Missione (MIS)cod_mis032Descrizione Missionedesc_misServizi istituzionali e generali delle amministrazioni pubblicheCodice Programma (PRG)cod_prg002Descrizione Programmadesc_prgIndirizzo politicoCodice Centro di Responsabilità (CDR)cod_cdr01Denominazione Centro di Responsabilità (CDR)desc_cdrGABINETTO E UFFICI DI DIRETTA COLLABORAZIONE ALL'OPERA DEL MINISTROTotale Pagato (OP+OA+NI+RSF)tot_pagato264875.77\n\n\n\n[Tbl. rendiconto_t]\n… e aggiungo colonne con i codici e descrizioni concatenate per categorie di spesa (cod_cat_all) e classificazione funzionale (COFOG) (cod_cofog_all)\n(Verifica spot)\n\n\ncod_catcod_ce2cod_ce3cod_cat_alldesc_catdesc_ce2desc_ce3desc_cat_alltot_pagato02021302_02_13CONSUMI INTERMEDIACQUISTO DI SERVIZI EFFETTIVIINDENNITA' DI MISSIONE E RIMBORSI SPESE VIAGGICONSUMI INTERMEDI | ACQUISTO DI SERVIZI EFFETTIVI | INDENNITA' DI MISSIONE E RIMBORSI SPESE VIAGGI10,409.6801010501_01_05REDDITI DA LAVORO DIPENDENTERETRIBUZIONI LORDE IN DENAROALTRI COMPENSI AL PERSONALEREDDITI DA LAVORO DIPENDENTE | RETRIBUZIONI LORDE IN DENARO | ALTRI COMPENSI AL PERSONALE121.6601010101_01_01REDDITI DA LAVORO DIPENDENTERETRIBUZIONI LORDE IN DENAROSTIPENDIREDDITI DA LAVORO DIPENDENTE | RETRIBUZIONI LORDE IN DENARO | STIPENDI102,223,837.62\n\n\ncod_fo1cod_fo2cod_fo3cod_cofog_alldesc_fo1desc_fo2desc_fo3desc_cofog_alltot_pagato03010103_01_01ORDINE PUBBLICO E SICUREZZASERVIZI DI POLIZIASERVIZI DI POLIZIAORDINE PUBBLICO E SICUREZZA | SERVIZI DI POLIZIA | SERVIZI DI POLIZIA4,743,715.3710090110_09_01PROTEZIONE SOCIALEPROTEZIONE SOCIALE NON ALTRIMENTI CLASSIFICABILEPROTEZIONE SOCIALE NON ALTRIMENTI CLASSIFICABILEPROTEZIONE SOCIALE | PROTEZIONE SOCIALE NON ALTRIMENTI CLASSIFICABILE | PROTEZIONE SOCIALE NON ALTRIMENTI CLASSIFICABILE35,766.0208060108_06_01ATTIVITA' RICREATIVE, CULTURALI E DI CULTOATTIVITA' RICREATIVE, CULTURALI E DI CULTO NON ALTRIMENTI CLASSIFICABILIATTIVITA' RICREATIVE, CULTURALI E DI CULTO NON ALTRIMENTI CLASSIFICABILIATTIVITA' RICREATIVE, CULTURALI E DI CULTO | ATTIVITA' RICREATIVE, CULTURALI E DI CULTO NON ALTRIMENTI CLASSIFICABILI | ATTIVITA' RICREATIVE, CULTURALI E DI CULTO NON ALTRIMENTI CLASSIFICABILI2,526.84"
+  },
+  {
+    "objectID": "01_codici.html#regioni-e-provincie-autonome",
+    "href": "01_codici.html#regioni-e-provincie-autonome",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "⚪️ Regioni e Provincie Autonome",
+    "text": "⚪️ Regioni e Provincie Autonome\n…"
+  },
+  {
+    "objectID": "01_codici.html#classificazione-cpt",
+    "href": "01_codici.html#classificazione-cpt",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "🟠 Classificazione CPT",
+    "text": "🟠 Classificazione CPT\nQuesta tabella viene dal file (condiviso da Alessandra) data/Categorie_con_totali_e_settori.xlsx\n\n[Tbl. cpt_t]\nRinomino le colonne…\n\n\nCodice Settore CPTDescrizione Settore CPT00001AMMINISTRAZIONE GENERALE00002DIFESA00003SICUREZZA PUBBLICA00004GIUSTIZIA00005ISTRUZIONE00006FORMAZIONE00007RICERCA E SVILUPPO (R&S)00008CULTURA E SERVIZI RICREATIVI00009EDILIZIA ABITATIVA ED URBANISTICA00010SANITA'00011INTERV. IN CAMPO SOC. (Assist. e Benefic.)00012Servizio Idrico Integrato00014AMBIENTE00015SMALTIMENTO DEI RIFIUTI00016ALTRI INTERVENTI IGIENICO SANITARI00017LAVORO00018PREVIDENZA E INTEGRAZIONI SALARIALI00019ALTRI TRASPORTI00020VIABILITA'00021TELECOMUNICAZIONI00022AGRICOLTURA00023PESCA MARITTIMA ED ACQUICOLTURA00024TURISMO00025COMMERCIO00026INDUSTRIA E ARTIGIANATO00027ENERGIA00028ALTRE OPERE PUBBLICHE00029ALTRE IN CAMPO ECONOMICO00030ONERI NON RIPARTIBILI\n\n\nDa questa tabella vedo che ho 29 settori CPT,\n\n❓ ma perchè non c’è 0012?\n❓ ma perchè hanno 2 0 davanti?\n\nConfronto con la classificazione funzionale RGS cod_fo1 e desc_fo1 (settori al 1o livello)\n\n\ncod_fo1desc_fo101SERVIZI GENERALI DELLE PUBBLICHE AMMINISTRAZIONI02DIFESA03ORDINE PUBBLICO E SICUREZZA04AFFARI ECONOMICI05PROTEZIONE DELL'AMBIENTE06ABITAZIONI E ASSETTO TERRITORIALE07SANITA'08ATTIVITA' RICREATIVE, CULTURALI E DI CULTO09ISTRUZIONE10PROTEZIONE SOCIALE\n\n\nDa questa tabella vedo che ho 10 settori in RGS,\n\n❓ solo 10 settori (1o livello)?\n❓ E la class COFOG?"
+  },
+  {
+    "objectID": "01_codici.html#categorie-di-spesa-classificazione-economica",
+    "href": "01_codici.html#categorie-di-spesa-classificazione-economica",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "Categorie di spesa (classificazione economica)",
+    "text": "Categorie di spesa (classificazione economica)\n\n🟠 Classificazione RGS - 33 categorie e sotto categorie di spesa (e.g. personale, acquisti, ecc) al 3o liv. di dettaglio"
+  },
+  {
+    "objectID": "01_codici.html#settori-classificazione-funzionale",
+    "href": "01_codici.html#settori-classificazione-funzionale",
+    "title": "Spesa statale regionalizzata 2021",
+    "section": "Settori (classificazione funzionale)",
+    "text": "Settori (classificazione funzionale)\n\n🟠 Classificazione RGS\n\n50 settori, 34 missioni e 16 programmi\ncategorie funzionali (COFOG) al 3o liv. di dettaglio"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Conti pubblici territoriali",
+    "section": "",
+    "text": "Analisi spesa statale regionalizzata (stima provvisoria su anno 2021)"
+  }
+]

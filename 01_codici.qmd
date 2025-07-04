@@ -28,15 +28,13 @@ format:
     toc-depth: 2
     toc-title: Indice
     highlight-style: github
-    #lang: it
-    embed-resources: true # external dependencies embedded (Not in ..._files/)
+    embed-resources: true 
     page-width: 6.5
-  pdf:
-    toc-depth: 2
-    toc-title: Indice
-    highlight-style: github
-    #lang: it
-    embed-resources: true # external dependencies embedded (Not in ..._files/)
+  # pdf:
+  #   toc-depth: 2
+  #   toc-title: Indice
+  #   highlight-style: github
+  #   embed-resources: true 
 format-links: false
 bibliography: bib/CPT.bib
 #csl: bib/apa-cv.csl # Very important for complete citations!!!!! 
@@ -267,6 +265,9 @@ cofog_check |> flextable() |>
 
 
 # 2) Raccordo codici Rendiconto - CPT
+# qui ------  ️🟥🟧🟨🟩🟦⬜️⬛️
+<!-- vedere i file qua e copiare in "raccordo"  -->
+<!-- '/Users/luisamimmi/Library/CloudStorage/OneDrive-PresidenzadelConsigliodeiministri/DPCOES-Documentale - Produzione/Revisione spese stato/Raccordo_classificazioni'  -->
 
 ## ⚪️ Regioni e Provincie Autonome
 
